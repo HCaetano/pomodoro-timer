@@ -6,18 +6,7 @@ function App() {
 
   useEffect(() => {
     const decrement = () => {
-      setSecond((prevCount) => {
-        if (prevCount > 0) {
-          if (prevCount <= 10) {
-            return `0${prevCount - 1}`;
-          } else {
-            return prevCount - 1;
-          }
-          // } else {
-          //   return 12;
-          //   // return 59;
-        }
-      });
+      setSecond((prevCount) => prevCount - 1);
     };
     const intervalId1 = setInterval(decrement, 1000);
 
@@ -30,20 +19,30 @@ function App() {
     setMinute((prevCount) => {
       console.log("second", second);
       console.log("minute", minute);
-      if (second === "00") {
+      if (second === -1) {
         setSecond(12);
 
         return prevCount - 1;
-      } else {
-        return prevCount;
       }
+
+      return prevCount;
     });
   }, [minute, second]);
 
   const HandleTimer = (props) => {
+    const { minute, second } = props;
+
+    const prependZeroIfNumberIsLessThanTen = (number) => {
+      if (number < 10) {
+        return `0${number}`;
+      }
+
+      return number;
+    };
+
     return (
       <div>
-        {props.minute}:{props.second}
+        {prependZeroIfNumberIsLessThanTen(minute)}:{prependZeroIfNumberIsLessThanTen(second)}
       </div>
     );
   };
