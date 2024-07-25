@@ -3,17 +3,21 @@ import { useEffect, useState } from "react";
 function App() {
   const [minute, setMinute] = useState(10);
   const [second, setSecond] = useState(12);
+  const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
-    const decrement = () => {
-      setSecond((prevCount) => prevCount - 1);
-    };
-    const intervalId1 = setInterval(decrement, 1000);
+    if (isRunning) {
+      const decrement = () => {
+        setSecond((prevCount) => prevCount - 1);
+      };
 
-    return () => {
-      clearInterval(intervalId1);
-    };
-  }, [minute, second]);
+      const intervalId1 = setInterval(decrement, 1000);
+
+      return () => {
+        clearInterval(intervalId1);
+      };
+    }
+  }, [isRunning, minute, second]);
 
   useEffect(() => {
     setMinute((prevCount) => {
@@ -28,6 +32,16 @@ function App() {
       return prevCount;
     });
   }, [minute, second]);
+
+  const toggleTimer = () => {
+    setIsRunning(!isRunning);
+  };
+
+  const StopTimer = () => {
+    toggleTimer();
+    setMinute(24);
+    setSecond(12);
+  };
 
   const HandleTimer = (props) => {
     const { minute, second } = props;
@@ -49,7 +63,9 @@ function App() {
 
   return (
     <div>
-      hi <HandleTimer minute={minute} second={second} />
+      hi <HandleTimer isRunning={isRunning} minute={minute} second={second} />
+      <button onClick={toggleTimer}>{isRunning ? "Pause" : "Start"}</button>
+      <button onClick={StopTimer}>Stop</button>
     </div>
   );
 }
