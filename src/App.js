@@ -9,28 +9,26 @@ function App() {
   useEffect(() => {
     if (isRunning) {
       const decrement = () => {
-        setSecond((prevCount) => prevCount - 1);
+        setSecond((prevSecond) => prevSecond - 1);
       };
 
-      const intervalId1 = setInterval(decrement, 1000);
+      const intervalId = setInterval(decrement, 1000);
 
       return () => {
-        clearInterval(intervalId1);
+        clearInterval(intervalId);
       };
     }
   }, [isRunning, minute, second]);
 
   useEffect(() => {
-    setMinute((prevCount) => {
-      console.log("second", second);
-      console.log("minute", minute);
+    setMinute((prevMinute) => {
       if (second === -1) {
         setSecond(12);
 
-        return prevCount - 1;
+        return prevMinute - 1;
       }
 
-      return prevCount;
+      return prevMinute;
     });
   }, [minute, second]);
 
