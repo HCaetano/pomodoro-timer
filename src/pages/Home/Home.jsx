@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Timer } from "../../components/Timer";
 
-function App() {
+function Home() {
   const [minute, setMinute] = useState(2);
   const [second, setSecond] = useState(12);
   const [isRunning, setIsRunning] = useState(false);
@@ -54,27 +55,11 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [minute, second]);
 
-  const HandleTimer = (props) => {
-    const { minute, second } = props;
-
-    const prependZeroIfNumberIsLessThanTen = (number) => {
-      if (number < 10) {
-        return `0${number}`;
-      }
-
-      return number;
-    };
-
-    return (
-      <div>
-        {prependZeroIfNumberIsLessThanTen(minute)}:{prependZeroIfNumberIsLessThanTen(second)}
-      </div>
-    );
-  };
+ 
 
   return (
     <div>
-      hi <HandleTimer isRunning={isRunning} minute={minute} second={second} />
+      hi <Timer isRunning={isRunning} minute={minute} second={second} />
       <button onClick={toggleTimer}>{isRunning ? "Pause" : "Start"}</button>
       <button onClick={stopTimer}>Stop</button>
       <audio ref={audioRef} src="/zen-gong.mp3" />
@@ -82,4 +67,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;
