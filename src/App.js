@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function App() {
-  const [minute, setMinute] = useState(10);
+  const [minute, setMinute] = useState(2);
   const [second, setSecond] = useState(12);
   const [isRunning, setIsRunning] = useState(false);
+  const audioRef = useRef(null);
 
   useEffect(() => {
     if (isRunning) {
@@ -37,11 +38,23 @@ function App() {
     setIsRunning(!isRunning);
   };
 
-  const StopTimer = () => {
+  const stopTimer = () => {
     toggleTimer();
     setMinute(24);
     setSecond(12);
   };
+
+  const playSound = () => {
+    audioRef.current.play();
+  };
+
+  useEffect(() => {
+    if (minute === 0 && second === -1) {
+      stopTimer();
+      playSound();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [minute, second]);
 
   const HandleTimer = (props) => {
     const { minute, second } = props;
@@ -65,7 +78,8 @@ function App() {
     <div>
       hi <HandleTimer isRunning={isRunning} minute={minute} second={second} />
       <button onClick={toggleTimer}>{isRunning ? "Pause" : "Start"}</button>
-      <button onClick={StopTimer}>Stop</button>
+      <button onClick={stopTimer}>Stop</button>
+      <audio ref={audioRef} src="/zen-gong.mp3" />
     </div>
   );
 }
