@@ -55,15 +55,18 @@ function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [minute, second]);
 
- 
-
   return (
-    <div>
-      hi <Timer isRunning={isRunning} minute={minute} second={second} />
-      <button onClick={toggleTimer}>{isRunning ? "Pause" : "Start"}</button>
-      <button onClick={stopTimer}>Stop</button>
+    <section>
+      <h1 className="w-fit text-3xl">hi</h1>
+      <Timer isRunning={isRunning} minute={minute} second={second} />
+      <button className="btn" onClick={toggleTimer}>
+        {isRunning ? "Pause" : "Start"}
+      </button>
+      <button className="btn" onClick={stopTimer}>
+        Stop
+      </button>
       <audio ref={audioRef} src="/zen-gong.mp3" />
-    </div>
+    </section>
   );
 }
 
