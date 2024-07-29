@@ -56,13 +56,16 @@ function Home() {
   }, [minute, second]);
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold underline">hi</h1>
+    <section className="flex">
+      <h1 className="w-fit text-3xl">hi</h1>
+      <div className="bg-blue-500 p-4 text-white">
+        <h1 className="text-2xl">Hello, Tailwind CSssssS!</h1>
+      </div>
       <Timer isRunning={isRunning} minute={minute} second={second} />
       <button onClick={toggleTimer}>{isRunning ? "Pause" : "Start"}</button>
       <button onClick={stopTimer}>Stop</button>
       <audio ref={audioRef} src="/zen-gong.mp3" />
-    </div>
+    </section>
   );
 }
 
