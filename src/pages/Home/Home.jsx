@@ -56,18 +56,26 @@ function Home() {
   }, [minute, second]);
 
   return (
-    <section className="flex">
-      <section className="flex w-1/2 flex-col">
+    <section className="flex h-screen">
+      <section className="flex h-screen w-1/2 flex-col items-center">
+        <section className="mt-20 flex gap-10">
+          <button className="btn w-fit">Pomodoro</button>
+          <button className="btn w-fit">Break</button>
+        </section>
         <Timer isRunning={isRunning} minute={minute} second={second} />
-        <button className="btn w-fit" onClick={toggleTimer}>
-          {isRunning ? "Pause" : "Start"}
-        </button>
-        <button className="btn w-fit" onClick={stopTimer}>
-          Stop
-        </button>
-        <audio ref={audioRef} src="/zen-gong.mp3" />
+        <section className="flex items-center gap-10">
+          <button className="btn w-fit" onClick={toggleTimer}>
+            {isRunning ? "Pause" : "Start"}
+          </button>
+          <button className="btn w-fit" onClick={stopTimer}>
+            Stop
+          </button>
+          <audio ref={audioRef} src="/zen-gong.mp3" />
+        </section>
       </section>
-      <section className="flex w-1/2 flex-col">hi</section>
+      <section className="flex h-screen w-1/2 flex-col items-center">
+        hi
+      </section>
     </section>
   );
 }

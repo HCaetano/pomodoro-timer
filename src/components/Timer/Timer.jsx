@@ -12,9 +12,11 @@ const Timer = (props) => {
   };
 
   return (
-    <div>
-      {prependZeroIfNumberIsLessThanTen(minute)}:
-      {prependZeroIfNumberIsLessThanTen(second)}
+    <div className="flex h-52 items-center justify-center">
+      <p className="text-6xl">
+        {prependZeroIfNumberIsLessThanTen(minute)}:
+        {prependZeroIfNumberIsLessThanTen(second)}
+      </p>
     </div>
   );
 };
