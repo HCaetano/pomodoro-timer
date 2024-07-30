@@ -1,0 +1,14 @@
+.button-enabled {
+  color: white;
+  cursor: pointer;
+}
+
+.button-disabled {
+  background-color: #b3d7ff;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+.button-disabled:hover {
+  background-color: #80c2ff;
+}

@@ -1,10 +1,13 @@
+import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
 import { Timer } from "../../components/Timer";
+import styles from "./home.module.css";
 
 function Home() {
   const [minute, setMinute] = useState(2);
   const [second, setSecond] = useState(12);
   const [isRunning, setIsRunning] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -51,6 +54,8 @@ function Home() {
     if (minute === 0 && second === -1) {
       stopTimer();
       playSound();
+
+      setIsDisabled(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [minute, second]);
@@ -60,7 +65,15 @@ function Home() {
       <section className="flex h-screen w-1/2 flex-col items-center">
         <section className="mt-20 flex gap-10">
           <button className="btn w-fit">Pomodoro</button>
-          <button className="btn w-fit">Break</button>
+          <button
+            className={classNames("btn", "flex", {
+              [styles["button-enabled"]]: !isDisabled,
+              [styles["button-disabled"]]: isDisabled
+            })}
+            disabled={isDisabled}
+          >
+            Break
+          </button>
         </section>
         <Timer isRunning={isRunning} minute={minute} second={second} />
         <section className="flex items-center gap-10">
