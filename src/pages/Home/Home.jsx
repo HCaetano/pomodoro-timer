@@ -41,7 +41,7 @@ function Home() {
   };
 
   const stopTimer = () => {
-    toggleTimer();
+    setIsRunning(false);
     setMinute(24);
     setSecond(12);
   };
@@ -54,7 +54,6 @@ function Home() {
     if (minute === 0 && second === -1) {
       stopTimer();
       playSound();
-
       setIsDisabled(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,7 +63,14 @@ function Home() {
     <section className="flex h-screen">
       <section className="flex h-screen w-1/2 flex-col items-center">
         <section className="mt-20 flex gap-10">
-          <button className="btn w-fit">Pomodoro</button>
+          <button
+            className={classNames("btn", "flex", {
+              [styles["button-enabled"]]: isDisabled,
+              [styles["button-disabled"]]: !isDisabled
+            })}
+          >
+            Pomodoro
+          </button>
           <button
             className={classNames("btn", "flex", {
               [styles["button-enabled"]]: !isDisabled,
