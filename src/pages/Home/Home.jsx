@@ -5,7 +5,7 @@ import styles from "./home.module.css";
 
 function Home() {
   const [minute, setMinute] = useState(2);
-  const [second, setSecond] = useState(12);
+  const [second, setSecond] = useState(6);
   const [isRunning, setIsRunning] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const audioRef = useRef(null);
@@ -27,7 +27,7 @@ function Home() {
   useEffect(() => {
     setMinute((prevMinute) => {
       if (second === -1) {
-        setSecond(12);
+        setSecond(6);
 
         return prevMinute - 1;
       }
@@ -36,6 +36,10 @@ function Home() {
     });
   }, [minute, second]);
 
+  const toggleDisabled = () => {
+    setIsDisabled(!isDisabled);
+  };
+
   const toggleTimer = () => {
     setIsRunning(!isRunning);
   };
@@ -43,7 +47,7 @@ function Home() {
   const stopTimer = () => {
     setIsRunning(false);
     setMinute(24);
-    setSecond(12);
+    setSecond(6);
   };
 
   const playSound = () => {
@@ -66,8 +70,9 @@ function Home() {
           <button
             className={classNames("btn", "flex", {
               [styles["button-enabled"]]: isDisabled,
-              [styles["button-disabled"]]: !isDisabled
+              [styles["button-pomodoro-disabled"]]: !isDisabled
             })}
+            onClick={toggleDisabled}
           >
             Pomodoro
           </button>
