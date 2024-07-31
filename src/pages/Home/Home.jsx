@@ -6,14 +6,10 @@ import styles from "./home.module.css";
 function Home() {
   const [minute, setMinute] = useState(2);
   const [second, setSecond] = useState(6);
-  const [pomodoroMinute] = useState(2);
-  const [pomodoroSecond] = useState(6);
-  // const [pomodoroMinute, setPomodoroMinute] = useState(2);
-  // const [pomodoroSecond, setPomodoroSecond] = useState(6);
-  const [breakMinute] = useState(0);
-  const [breakSecond] = useState(5);
-  // const [breakMinute, setBreakMinute] = useState(2);
-  // const [breakSecond, setBreakSecond] = useState(6);
+  const [pomodoroMinute, setPomodoroMinute] = useState(2);
+  const [pomodoroSecond, setPomodoroSecond] = useState(6);
+  const [breakMinute, setBreakMinute] = useState(0);
+  const [breakSecond, setBreakSecond] = useState(5);
   const [isRunning, setIsRunning] = useState(false);
   const [isPomodoroActive, setIsPomodoroActive] = useState(true);
   const [isBreakActive, setIsBreakActive] = useState(false);
@@ -51,9 +47,17 @@ function Home() {
     if (name === "pomodoro") {
       setIsPomodoroActive(true);
       setIsBreakActive(false);
+      setBreakMinute(minute);
+      setBreakSecond(second);
+      setMinute(pomodoroMinute);
+      setSecond(pomodoroSecond);
     } else {
       setIsBreakActive(true);
       setIsPomodoroActive(false);
+      setPomodoroMinute(minute);
+      setPomodoroSecond(second);
+      setMinute(breakMinute);
+      setSecond(breakSecond);
     }
   };
 
