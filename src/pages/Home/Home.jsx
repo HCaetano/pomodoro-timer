@@ -15,7 +15,7 @@ function Home() {
   // const [breakMinute, setBreakMinute] = useState(2);
   // const [breakSecond, setBreakSecond] = useState(6);
   const [isRunning, setIsRunning] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(true);
+  const [isPomodoroActive, setIsPomodoroActive] = useState(true);
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ function Home() {
   }, [minute, second]);
 
   const toggleDisabled = () => {
-    setIsDisabled(!isDisabled);
+    setIsPomodoroActive(!isPomodoroActive);
   };
 
   const toggleTimer = () => {
@@ -82,7 +82,7 @@ function Home() {
     if (minute === 0 && second === -1) {
       handleEndOfPomodoroCycle();
       playSound();
-      setIsDisabled(false);
+      setIsPomodoroActive(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [minute, second]);
@@ -93,9 +93,10 @@ function Home() {
         <section className="mt-20 flex gap-10">
           <button
             className={classNames("btn", "flex", {
-              [styles["button-enabled"]]: isDisabled,
-              [styles["button-disabled"]]: !isDisabled
+              [styles["button-active"]]: isPomodoroActive,
+              [styles["button-inactive"]]: !isPomodoroActive
             })}
+            disabled={isPomodoroActive}
             onClick={() => {
               toggleDisabled();
               setPomodoroTimer();
@@ -105,11 +106,14 @@ function Home() {
           </button>
           <button
             className={classNames("btn", "flex", {
-              [styles["button-enabled"]]: !isDisabled,
-              [styles["button-disabled"]]: isDisabled
+              [styles["button-active"]]: !isPomodoroActive,
+              [styles["button-inactive"]]: isPomodoroActive
             })}
-            // disabled={isDisabled}
-            onClick={setBreakTimer}
+            disabled={!isPomodoroActive}
+            onClick={() => {
+              toggleDisabled();
+              setBreakTimer();
+            }}
           >
             Break
           </button>

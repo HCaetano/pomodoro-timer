@@ -1,19 +1,14 @@
-.button-enabled {
+.button-active {
   color: white;
   cursor: pointer;
+  cursor: not-allowed;
 }
 
-.button-disabled {
+.button-inactive {
   background-color: #b3d7ff;
   color: #666666;
-  /* cursor: not-allowed; */
 }
 
-/* .button-pomodoro-disabled {
-  background-color: #b3d7ff;
-  color: #666666;
-} */
-
-.button-disabled:hover {
+.button-inactive:hover {
   background-color: #80c2ff;
 }
