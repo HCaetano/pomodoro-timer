@@ -46,21 +46,15 @@ function Home() {
   }, [minute, second]);
 
   const handleActiveInactiveButtons = (name) => {
-    console.log(name);
-    console.log("pomodoro", isPomodoroActive);
-    console.log("break", isBreakActive);
+    setIsRunning(false);
 
     if (name === "pomodoro") {
-      setIsBreakActive(true);
-      setIsPomodoroActive(false);
-    } else {
       setIsPomodoroActive(true);
       setIsBreakActive(false);
+    } else {
+      setIsBreakActive(true);
+      setIsPomodoroActive(false);
     }
-
-    // handle active inactive
-    // receives name of button
-    // sets active inactive accordingly
   };
 
   const toggleTimer = () => {
@@ -80,10 +74,12 @@ function Home() {
       setMinute(0);
       setSecond(5);
       setIsPomodoroActive(false);
+      setIsBreakActive(true);
     } else {
       setMinute(2);
       setSecond(6);
       setIsBreakActive(false);
+      setIsPomodoroActive(true);
     }
   };
 
@@ -105,7 +101,6 @@ function Home() {
     if (minute === 0 && second === -1) {
       handleEndOfCycle();
       playSound();
-      // setIsPomodoroActive(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [minute, second]);
@@ -119,7 +114,6 @@ function Home() {
               [styles["button-active"]]: isPomodoroActive,
               [styles["button-inactive"]]: !isPomodoroActive
             })}
-            disabled={isPomodoroActive}
             onClick={() => {
               handleActiveInactiveButtons("pomodoro");
               setPomodoroTimer();
@@ -132,7 +126,6 @@ function Home() {
               [styles["button-active"]]: isBreakActive,
               [styles["button-inactive"]]: !isBreakActive
             })}
-            disabled={isBreakActive}
             onClick={() => {
               handleActiveInactiveButtons("break");
               setBreakTimer();

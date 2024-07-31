@@ -1,7 +1,6 @@
 .button-active {
   color: white;
   cursor: pointer;
-  cursor: not-allowed;
 }
 
 .button-inactive {
