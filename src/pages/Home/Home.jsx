@@ -6,6 +6,14 @@ import styles from "./home.module.css";
 function Home() {
   const [minute, setMinute] = useState(2);
   const [second, setSecond] = useState(6);
+  const [pomodoroMinute] = useState(2);
+  const [pomodoroSecond] = useState(6);
+  // const [pomodoroMinute, setPomodoroMinute] = useState(2);
+  // const [pomodoroSecond, setPomodoroSecond] = useState(6);
+  const [breakMinute] = useState(0);
+  const [breakSecond] = useState(5);
+  // const [breakMinute, setBreakMinute] = useState(2);
+  // const [breakSecond, setBreakSecond] = useState(6);
   const [isRunning, setIsRunning] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const audioRef = useRef(null);
@@ -46,8 +54,24 @@ function Home() {
 
   const stopTimer = () => {
     setIsRunning(false);
-    setMinute(24);
+    setMinute(2);
     setSecond(6);
+  };
+
+  const handleEndOfPomodoroCycle = () => {
+    setIsRunning(false);
+    setMinute(0);
+    setSecond(5);
+  };
+
+  const setBreakTimer = () => {
+    setMinute(breakMinute);
+    setSecond(breakSecond);
+  };
+
+  const setPomodoroTimer = () => {
+    setMinute(pomodoroMinute);
+    setSecond(pomodoroSecond);
   };
 
   const playSound = () => {
@@ -56,7 +80,7 @@ function Home() {
 
   useEffect(() => {
     if (minute === 0 && second === -1) {
-      stopTimer();
+      handleEndOfPomodoroCycle();
       playSound();
       setIsDisabled(false);
     }
@@ -70,9 +94,12 @@ function Home() {
           <button
             className={classNames("btn", "flex", {
               [styles["button-enabled"]]: isDisabled,
-              [styles["button-pomodoro-disabled"]]: !isDisabled
+              [styles["button-disabled"]]: !isDisabled
             })}
-            onClick={toggleDisabled}
+            onClick={() => {
+              toggleDisabled();
+              setPomodoroTimer();
+            }}
           >
             Pomodoro
           </button>
@@ -81,7 +108,8 @@ function Home() {
               [styles["button-enabled"]]: !isDisabled,
               [styles["button-disabled"]]: isDisabled
             })}
-            disabled={isDisabled}
+            // disabled={isDisabled}
+            onClick={setBreakTimer}
           >
             Break
           </button>
