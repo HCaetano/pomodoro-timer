@@ -16,6 +16,7 @@ function Home() {
   // const [breakSecond, setBreakSecond] = useState(6);
   const [isRunning, setIsRunning] = useState(false);
   const [isPomodoroActive, setIsPomodoroActive] = useState(true);
+  const [isBreakActive, setIsBreakActive] = useState(false);
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -44,8 +45,22 @@ function Home() {
     });
   }, [minute, second]);
 
-  const toggleDisabled = () => {
-    setIsPomodoroActive(!isPomodoroActive);
+  const handleActiveInactiveButtons = (name) => {
+    console.log(name);
+    console.log("pomodoro", isPomodoroActive);
+    console.log("break", isBreakActive);
+
+    if (name === "pomodoro") {
+      setIsBreakActive(true);
+      setIsPomodoroActive(false);
+    } else {
+      setIsPomodoroActive(true);
+      setIsBreakActive(false);
+    }
+
+    // handle active inactive
+    // receives name of button
+    // sets active inactive accordingly
   };
 
   const toggleTimer = () => {
@@ -58,10 +73,18 @@ function Home() {
     setSecond(6);
   };
 
-  const handleEndOfPomodoroCycle = () => {
+  const handleEndOfCycle = () => {
     setIsRunning(false);
-    setMinute(0);
-    setSecond(5);
+
+    if (isPomodoroActive) {
+      setMinute(0);
+      setSecond(5);
+      setIsPomodoroActive(false);
+    } else {
+      setMinute(2);
+      setSecond(6);
+      setIsBreakActive(false);
+    }
   };
 
   const setBreakTimer = () => {
@@ -80,9 +103,9 @@ function Home() {
 
   useEffect(() => {
     if (minute === 0 && second === -1) {
-      handleEndOfPomodoroCycle();
+      handleEndOfCycle();
       playSound();
-      setIsPomodoroActive(false);
+      // setIsPomodoroActive(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [minute, second]);
@@ -98,7 +121,7 @@ function Home() {
             })}
             disabled={isPomodoroActive}
             onClick={() => {
-              toggleDisabled();
+              handleActiveInactiveButtons("pomodoro");
               setPomodoroTimer();
             }}
           >
@@ -106,12 +129,12 @@ function Home() {
           </button>
           <button
             className={classNames("btn", "flex", {
-              [styles["button-active"]]: !isPomodoroActive,
-              [styles["button-inactive"]]: isPomodoroActive
+              [styles["button-active"]]: isBreakActive,
+              [styles["button-inactive"]]: !isBreakActive
             })}
-            disabled={!isPomodoroActive}
+            disabled={isBreakActive}
             onClick={() => {
-              toggleDisabled();
+              handleActiveInactiveButtons("break");
               setBreakTimer();
             }}
           >
