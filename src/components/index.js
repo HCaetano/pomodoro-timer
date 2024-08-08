@@ -1,3 +1,4 @@
+import { NewComponent } from "./newcomponent";
 import { Timer } from "./Timer";
 
-export { Timer };
+export { NewComponent, Timer };
