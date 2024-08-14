@@ -19,8 +19,10 @@ function Home() {
   const [isRunning, setIsRunning] = useState(false);
   const [isPomodoroActive, setIsPomodoroActive] = useState(true);
   const [isBreakActive, setIsBreakActive] = useState(false);
-  // const [pomodoroCycles, setPomodoroCycles] = useState(0);
-  // const [shortBreakCycles, setShortBreakCycles] = useState(0);
+  const [pomodoroCycles, setPomodoroCycles] = useState(0);
+  const [shortBreakCycles, setShortBreakCycles] = useState(0);
+
+  console.log(pomodoroCycles, shortBreakCycles);
 
   const audioRef = useRef(null);
 
@@ -58,21 +60,6 @@ function Home() {
     setBreakSecond(DEFAULT_BREAK_SECOND);
   };
 
-  // const handleEndOfCycle = () => {
-  //   setIsRunning(false);
-
-  //   if (isPomodoroActive) {
-  //     setIsPomodoroActive(false);
-  //     setIsBreakActive(true);
-  //     setPomodoroCycles((prevPomodoroCycles) => prevPomodoroCycles + 1);
-  //   } else {
-  //     setMinute(2);
-  //     setIsBreakActive(false);
-  //     setIsPomodoroActive(true);
-  //     setShortBreakCycles((prevBreakCycles) => prevBreakCycles + 1);
-  //   }
-  // };
-
   const setBreakTimer = () => {
     setMinute(breakMinute);
     setSecond(breakSecond);
@@ -96,8 +83,47 @@ function Home() {
 
   const handleEndOfCycle = () => {
     playSound();
-    resetTimer();
+    // resetTimer();
+
+    if (isPomodoroActive) {
+      setPomodoroCycles((prevPomodoroCycles) => prevPomodoroCycles + 1);
+      handleActiveInactiveButtons("break");
+
+      setIsRunning(false);
+      setMinute(DEFAULT_BREAK_MINUTE);
+      setSecond(DEFAULT_BREAK_SECOND);
+      setPomodoroMinute(DEFAULT_POMODORO_MINUTE);
+      setPomodoroSecond(DEFAULT_POMODORO_SECOND);
+      setBreakMinute(DEFAULT_BREAK_MINUTE);
+      setBreakSecond(DEFAULT_BREAK_SECOND);
+    } else {
+      setShortBreakCycles((prevBreakCycles) => prevBreakCycles + 1);
+      handleActiveInactiveButtons("pomodoro");
+
+      setIsRunning(false);
+      setMinute(DEFAULT_POMODORO_MINUTE);
+      setSecond(DEFAULT_POMODORO_SECOND);
+      setPomodoroMinute(DEFAULT_POMODORO_MINUTE);
+      setPomodoroSecond(DEFAULT_POMODORO_SECOND);
+      setBreakMinute(DEFAULT_BREAK_MINUTE);
+      setBreakSecond(DEFAULT_BREAK_SECOND);
+    }
   };
+
+  // const handleEndOfCycle = () => {
+  //   setIsRunning(false);
+
+  //   if (isPomodoroActive) {
+  //     setIsPomodoroActive(false);
+  //     setIsBreakActive(true);
+  //     setPomodoroCycles((prevPomodoroCycles) => prevPomodoroCycles + 1);
+  //   } else {
+  //     setMinute(2);
+  //     setIsBreakActive(false);
+  //     setIsPomodoroActive(true);
+  //     setShortBreakCycles((prevBreakCycles) => prevBreakCycles + 1);
+  //   }
+  // };
 
   return (
     <section className="flex h-screen">
@@ -146,8 +172,6 @@ function Home() {
               resetTimer();
               setIsPomodoroActive(true);
               setIsBreakActive(false);
-              // handleActiveInactiveButtons("pomodoro");
-              // setPomodoroTimer();
             }}
           >
             Stop
