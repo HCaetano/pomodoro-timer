@@ -50,10 +50,17 @@ function Home() {
     setIsRunning(!isRunning);
   };
 
-  const resetTimer = () => {
+  const resetTimer = (nextCycleIs) => {
     setIsRunning(false);
-    setMinute(DEFAULT_POMODORO_MINUTE);
-    setSecond(DEFAULT_POMODORO_SECOND);
+
+    if (nextCycleIs === "break") {
+      setMinute(DEFAULT_BREAK_MINUTE);
+      setSecond(DEFAULT_BREAK_SECOND);
+    } else {
+      setMinute(DEFAULT_POMODORO_MINUTE);
+      setSecond(DEFAULT_POMODORO_SECOND);
+    }
+
     setPomodoroMinute(DEFAULT_POMODORO_MINUTE);
     setPomodoroSecond(DEFAULT_POMODORO_SECOND);
     setBreakMinute(DEFAULT_BREAK_MINUTE);
@@ -83,47 +90,18 @@ function Home() {
 
   const handleEndOfCycle = () => {
     playSound();
-    // resetTimer();
+    setIsRunning(false);
 
     if (isPomodoroActive) {
       setPomodoroCycles((prevPomodoroCycles) => prevPomodoroCycles + 1);
       handleActiveInactiveButtons("break");
-
-      setIsRunning(false);
-      setMinute(DEFAULT_BREAK_MINUTE);
-      setSecond(DEFAULT_BREAK_SECOND);
-      setPomodoroMinute(DEFAULT_POMODORO_MINUTE);
-      setPomodoroSecond(DEFAULT_POMODORO_SECOND);
-      setBreakMinute(DEFAULT_BREAK_MINUTE);
-      setBreakSecond(DEFAULT_BREAK_SECOND);
+      resetTimer("break");
     } else {
       setShortBreakCycles((prevBreakCycles) => prevBreakCycles + 1);
       handleActiveInactiveButtons("pomodoro");
-
-      setIsRunning(false);
-      setMinute(DEFAULT_POMODORO_MINUTE);
-      setSecond(DEFAULT_POMODORO_SECOND);
-      setPomodoroMinute(DEFAULT_POMODORO_MINUTE);
-      setPomodoroSecond(DEFAULT_POMODORO_SECOND);
-      setBreakMinute(DEFAULT_BREAK_MINUTE);
-      setBreakSecond(DEFAULT_BREAK_SECOND);
+      resetTimer("pomodoro");
     }
   };
-
-  // const handleEndOfCycle = () => {
-  //   setIsRunning(false);
-
-  //   if (isPomodoroActive) {
-  //     setIsPomodoroActive(false);
-  //     setIsBreakActive(true);
-  //     setPomodoroCycles((prevPomodoroCycles) => prevPomodoroCycles + 1);
-  //   } else {
-  //     setMinute(2);
-  //     setIsBreakActive(false);
-  //     setIsPomodoroActive(true);
-  //     setShortBreakCycles((prevBreakCycles) => prevBreakCycles + 1);
-  //   }
-  // };
 
   return (
     <section className="flex h-screen">
@@ -169,9 +147,11 @@ function Home() {
           <button
             className="btn w-fit"
             onClick={() => {
-              resetTimer();
+              resetTimer("pomodoro");
               setIsPomodoroActive(true);
               setIsBreakActive(false);
+              setPomodoroCycles(0);
+              setShortBreakCycles(0);
             }}
           >
             Stop
