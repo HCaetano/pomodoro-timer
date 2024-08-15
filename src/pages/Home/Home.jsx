@@ -6,23 +6,22 @@ import styles from "./home.module.css";
 
 const DEFAULT_POMODORO_MINUTE = 1;
 const DEFAULT_POMODORO_SECOND = 6;
-const DEFAULT_BREAK_MINUTE = 0;
-const DEFAULT_BREAK_SECOND = 5;
+const DEFAULT_SHORT_BREAK_MINUTE = 0;
+const DEFAULT_SHORT_BREAK_SECOND = 5;
+const DEFAULT_LONG_BREAK_MINUTE = 0;
+const DEFAULT_LONG_BREAK_SECOND = 10;
 
 function Home() {
   const [minute, setMinute] = useState(DEFAULT_POMODORO_MINUTE);
   const [second, setSecond] = useState(DEFAULT_POMODORO_SECOND);
   const [pomodoroMinute, setPomodoroMinute] = useState(DEFAULT_POMODORO_MINUTE);
   const [pomodoroSecond, setPomodoroSecond] = useState(DEFAULT_POMODORO_SECOND);
-  const [breakMinute, setBreakMinute] = useState(DEFAULT_BREAK_MINUTE);
-  const [breakSecond, setBreakSecond] = useState(DEFAULT_BREAK_SECOND);
+  const [breakMinute, setBreakMinute] = useState(DEFAULT_SHORT_BREAK_MINUTE);
+  const [breakSecond, setBreakSecond] = useState(DEFAULT_SHORT_BREAK_SECOND);
   const [isRunning, setIsRunning] = useState(false);
   const [isPomodoroActive, setIsPomodoroActive] = useState(true);
   const [isBreakActive, setIsBreakActive] = useState(false);
   const [pomodoroCycles, setPomodoroCycles] = useState(0);
-  const [shortBreakCycles, setShortBreakCycles] = useState(0);
-
-  console.log(pomodoroCycles, shortBreakCycles);
 
   const audioRef = useRef(null);
 
@@ -50,12 +49,22 @@ function Home() {
     setIsRunning(!isRunning);
   };
 
-  const resetTimer = (nextCycleIs) => {
+  const resetTimer = (nextCycleIs, currentCycleCounter) => {
     setIsRunning(false);
 
     if (nextCycleIs === "break") {
-      setMinute(DEFAULT_BREAK_MINUTE);
-      setSecond(DEFAULT_BREAK_SECOND);
+      if (currentCycleCounter === 4) {
+        setMinute(DEFAULT_LONG_BREAK_MINUTE);
+        setSecond(DEFAULT_LONG_BREAK_SECOND);
+        setBreakMinute(DEFAULT_LONG_BREAK_MINUTE);
+        setBreakSecond(DEFAULT_LONG_BREAK_SECOND);
+        setPomodoroCycles(0);
+      } else {
+        setMinute(DEFAULT_SHORT_BREAK_MINUTE);
+        setSecond(DEFAULT_SHORT_BREAK_SECOND);
+        setBreakMinute(DEFAULT_SHORT_BREAK_MINUTE);
+        setBreakSecond(DEFAULT_SHORT_BREAK_SECOND);
+      }
     } else {
       setMinute(DEFAULT_POMODORO_MINUTE);
       setSecond(DEFAULT_POMODORO_SECOND);
@@ -63,8 +72,6 @@ function Home() {
 
     setPomodoroMinute(DEFAULT_POMODORO_MINUTE);
     setPomodoroSecond(DEFAULT_POMODORO_SECOND);
-    setBreakMinute(DEFAULT_BREAK_MINUTE);
-    setBreakSecond(DEFAULT_BREAK_SECOND);
   };
 
   const setBreakTimer = () => {
@@ -81,25 +88,22 @@ function Home() {
     audioRef.current.play();
   };
 
-  // useEffect(() => {
-  //   if (pomodoroCycles === 2) {
-  //     setMinute(0);
-  //     setSecond(9);
-  //   }
-  // }, [pomodoroCycles]);
-
   const handleEndOfCycle = () => {
     playSound();
     setIsRunning(false);
 
     if (isPomodoroActive) {
-      setPomodoroCycles((prevPomodoroCycles) => prevPomodoroCycles + 1);
-      handleActiveInactiveButtons("break");
-      resetTimer("break");
+      setPomodoroCycles((prevPomodoroCycles) => {
+        const updatedCycles = prevPomodoroCycles + 1;
+
+        handleActiveInactiveButtons("break");
+        resetTimer("break", updatedCycles);
+
+        return updatedCycles;
+      });
     } else {
-      setShortBreakCycles((prevBreakCycles) => prevBreakCycles + 1);
       handleActiveInactiveButtons("pomodoro");
-      resetTimer("pomodoro");
+      resetTimer("pomodoro", pomodoroCycles);
     }
   };
 
@@ -151,17 +155,15 @@ function Home() {
               setIsPomodoroActive(true);
               setIsBreakActive(false);
               setPomodoroCycles(0);
-              setShortBreakCycles(0);
             }}
           >
             Stop
           </button>
           <audio ref={audioRef} src="/zen-gong.mp3" />
         </section>
-        {/* <section>
+        <section>
           <p>Pomodoro cycles: {pomodoroCycles}</p>
-          <p>Short break cycles: {shortBreakCycles}</p>
-        </section> */}
+        </section>
       </section>
       <section className="flex h-screen w-1/2 flex-col items-center">
         {/* hi */}
