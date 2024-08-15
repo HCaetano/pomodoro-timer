@@ -108,42 +108,42 @@ function Home() {
   };
 
   return (
-    <section className="flex h-screen">
-      <section className="flex h-screen w-1/2 flex-col items-center">
-        <section className="mt-20 flex gap-10">
-          <button
-            className={classNames("btn", "flex", {
-              [styles["button-active"]]: isPomodoroActive,
-              [styles["button-inactive"]]: !isPomodoroActive
-            })}
-            onClick={() => {
-              handleActiveInactiveButtons("pomodoro");
-              setPomodoroTimer();
-            }}
-          >
-            Pomodoro
-          </button>
-          <button
-            className={classNames("btn", "flex", {
-              [styles["button-active"]]: isBreakActive,
-              [styles["button-inactive"]]: !isBreakActive
-            })}
-            onClick={() => {
-              handleActiveInactiveButtons("break");
-              setBreakTimer();
-            }}
-          >
-            Break
-          </button>
-        </section>
-        <Timer
-          isRunning={isRunning}
-          minute={minute}
-          setMinute={setMinute}
-          second={second}
-          setSecond={setSecond}
-          handleEndOfCycle={handleEndOfCycle}
-        />
+    <section className="flex h-screen flex-col items-center">
+      <section className="mt-20 flex gap-10">
+        <button
+          className={classNames("btn", "flex", {
+            [styles["button-active"]]: isPomodoroActive,
+            [styles["button-inactive"]]: !isPomodoroActive
+          })}
+          onClick={() => {
+            handleActiveInactiveButtons("pomodoro");
+            setPomodoroTimer();
+          }}
+        >
+          Pomodoro
+        </button>
+        <button
+          className={classNames("btn", "flex", {
+            [styles["button-active"]]: isBreakActive,
+            [styles["button-inactive"]]: !isBreakActive
+          })}
+          onClick={() => {
+            handleActiveInactiveButtons("break");
+            setBreakTimer();
+          }}
+        >
+          Break
+        </button>
+      </section>
+      <Timer
+        isRunning={isRunning}
+        minute={minute}
+        setMinute={setMinute}
+        second={second}
+        setSecond={setSecond}
+        handleEndOfCycle={handleEndOfCycle}
+      />
+      <section className="flex flex-col items-center gap-10">
         <section className="flex items-center gap-10">
           <button className="btn w-fit" onClick={toggleTimer}>
             {isRunning ? "Pause" : "Start"}
@@ -161,13 +161,7 @@ function Home() {
           </button>
           <audio ref={audioRef} src="/zen-gong.mp3" />
         </section>
-        <section>
-          <p>Pomodoro cycles: {pomodoroCycles}</p>
-        </section>
-      </section>
-      <section className="flex h-screen w-1/2 flex-col items-center">
-        {/* hi */}
-        {/* <NewComponent /> */}
+        <p>Pomodoro cycles: {pomodoroCycles}</p>
       </section>
     </section>
   );
