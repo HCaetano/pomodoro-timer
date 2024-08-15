@@ -1,71 +1,174 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Timer } from "../../components/Timer";
+import classNames from "classnames";
+
+import React, { useRef, useState } from "react";
+import { Timer } from "../../components";
+import styles from "./home.module.css";
+
+const DEFAULT_POMODORO_MINUTE = 1;
+const DEFAULT_POMODORO_SECOND = 6;
+const DEFAULT_SHORT_BREAK_MINUTE = 0;
+const DEFAULT_SHORT_BREAK_SECOND = 5;
+const DEFAULT_LONG_BREAK_MINUTE = 0;
+const DEFAULT_LONG_BREAK_SECOND = 10;
 
 function Home() {
-  const [minute, setMinute] = useState(2);
-  const [second, setSecond] = useState(12);
+  const [minute, setMinute] = useState(DEFAULT_POMODORO_MINUTE);
+  const [second, setSecond] = useState(DEFAULT_POMODORO_SECOND);
+  const [pomodoroMinute, setPomodoroMinute] = useState(DEFAULT_POMODORO_MINUTE);
+  const [pomodoroSecond, setPomodoroSecond] = useState(DEFAULT_POMODORO_SECOND);
+  const [breakMinute, setBreakMinute] = useState(DEFAULT_SHORT_BREAK_MINUTE);
+  const [breakSecond, setBreakSecond] = useState(DEFAULT_SHORT_BREAK_SECOND);
   const [isRunning, setIsRunning] = useState(false);
+  const [isPomodoroActive, setIsPomodoroActive] = useState(true);
+  const [isBreakActive, setIsBreakActive] = useState(false);
+  const [pomodoroCycles, setPomodoroCycles] = useState(0);
+
   const audioRef = useRef(null);
 
-  useEffect(() => {
-    if (isRunning) {
-      const decrement = () => {
-        setSecond((prevSecond) => prevSecond - 1);
-      };
+  const handleActiveInactiveButtons = (name) => {
+    setIsRunning(false);
 
-      const intervalId = setInterval(decrement, 1000);
-
-      return () => {
-        clearInterval(intervalId);
-      };
+    if (name === "pomodoro") {
+      setIsPomodoroActive(true);
+      setIsBreakActive(false);
+      setBreakMinute(minute);
+      setBreakSecond(second);
+      setMinute(pomodoroMinute);
+      setSecond(pomodoroSecond);
+    } else {
+      setIsBreakActive(true);
+      setIsPomodoroActive(false);
+      setPomodoroMinute(minute);
+      setPomodoroSecond(second);
+      setMinute(breakMinute);
+      setSecond(breakSecond);
     }
-  }, [isRunning, minute, second]);
-
-  useEffect(() => {
-    setMinute((prevMinute) => {
-      if (second === -1) {
-        setSecond(12);
-
-        return prevMinute - 1;
-      }
-
-      return prevMinute;
-    });
-  }, [minute, second]);
+  };
 
   const toggleTimer = () => {
     setIsRunning(!isRunning);
   };
 
-  const stopTimer = () => {
-    toggleTimer();
-    setMinute(24);
-    setSecond(12);
+  const resetTimer = (nextCycleIs, currentCycleCounter) => {
+    setIsRunning(false);
+
+    if (nextCycleIs === "break") {
+      if (currentCycleCounter === 4) {
+        setMinute(DEFAULT_LONG_BREAK_MINUTE);
+        setSecond(DEFAULT_LONG_BREAK_SECOND);
+        setBreakMinute(DEFAULT_LONG_BREAK_MINUTE);
+        setBreakSecond(DEFAULT_LONG_BREAK_SECOND);
+        setPomodoroCycles(0);
+      } else {
+        setMinute(DEFAULT_SHORT_BREAK_MINUTE);
+        setSecond(DEFAULT_SHORT_BREAK_SECOND);
+        setBreakMinute(DEFAULT_SHORT_BREAK_MINUTE);
+        setBreakSecond(DEFAULT_SHORT_BREAK_SECOND);
+      }
+    } else {
+      setMinute(DEFAULT_POMODORO_MINUTE);
+      setSecond(DEFAULT_POMODORO_SECOND);
+    }
+
+    setPomodoroMinute(DEFAULT_POMODORO_MINUTE);
+    setPomodoroSecond(DEFAULT_POMODORO_SECOND);
+  };
+
+  const setBreakTimer = () => {
+    setMinute(breakMinute);
+    setSecond(breakSecond);
+  };
+
+  const setPomodoroTimer = () => {
+    setMinute(pomodoroMinute);
+    setSecond(pomodoroSecond);
   };
 
   const playSound = () => {
     audioRef.current.play();
   };
 
-  useEffect(() => {
-    if (minute === 0 && second === -1) {
-      stopTimer();
-      playSound();
+  const handleEndOfCycle = () => {
+    playSound();
+    setIsRunning(false);
+
+    if (isPomodoroActive) {
+      setPomodoroCycles((prevPomodoroCycles) => {
+        const updatedCycles = prevPomodoroCycles + 1;
+
+        handleActiveInactiveButtons("break");
+        resetTimer("break", updatedCycles);
+
+        return updatedCycles;
+      });
+    } else {
+      handleActiveInactiveButtons("pomodoro");
+      resetTimer("pomodoro", pomodoroCycles);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [minute, second]);
+  };
 
   return (
-    <section>
-      <h1 className="w-fit text-3xl">hi</h1>
-      <Timer isRunning={isRunning} minute={minute} second={second} />
-      <button className="btn" onClick={toggleTimer}>
-        {isRunning ? "Pause" : "Start"}
-      </button>
-      <button className="btn" onClick={stopTimer}>
-        Stop
-      </button>
-      <audio ref={audioRef} src="/zen-gong.mp3" />
+    <section className="flex h-screen">
+      <section className="flex h-screen w-1/2 flex-col items-center">
+        <section className="mt-20 flex gap-10">
+          <button
+            className={classNames("btn", "flex", {
+              [styles["button-active"]]: isPomodoroActive,
+              [styles["button-inactive"]]: !isPomodoroActive
+            })}
+            onClick={() => {
+              handleActiveInactiveButtons("pomodoro");
+              setPomodoroTimer();
+            }}
+          >
+            Pomodoro
+          </button>
+          <button
+            className={classNames("btn", "flex", {
+              [styles["button-active"]]: isBreakActive,
+              [styles["button-inactive"]]: !isBreakActive
+            })}
+            onClick={() => {
+              handleActiveInactiveButtons("break");
+              setBreakTimer();
+            }}
+          >
+            Break
+          </button>
+        </section>
+        <Timer
+          isRunning={isRunning}
+          minute={minute}
+          setMinute={setMinute}
+          second={second}
+          setSecond={setSecond}
+          handleEndOfCycle={handleEndOfCycle}
+        />
+        <section className="flex items-center gap-10">
+          <button className="btn w-fit" onClick={toggleTimer}>
+            {isRunning ? "Pause" : "Start"}
+          </button>
+          <button
+            className="btn w-fit"
+            onClick={() => {
+              resetTimer("pomodoro");
+              setIsPomodoroActive(true);
+              setIsBreakActive(false);
+              setPomodoroCycles(0);
+            }}
+          >
+            Stop
+          </button>
+          <audio ref={audioRef} src="/zen-gong.mp3" />
+        </section>
+        <section>
+          <p>Pomodoro cycles: {pomodoroCycles}</p>
+        </section>
+      </section>
+      <section className="flex h-screen w-1/2 flex-col items-center">
+        {/* hi */}
+        {/* <NewComponent /> */}
+      </section>
     </section>
   );
 }

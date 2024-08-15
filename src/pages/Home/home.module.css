@@ -1,0 +1,13 @@
+.button-active {
+  color: white;
+  cursor: pointer;
+}
+
+.button-inactive {
+  background-color: #b3d7ff;
+  color: #666666;
+}
+
+.button-inactive:hover {
+  background-color: #80c2ff;
+}
