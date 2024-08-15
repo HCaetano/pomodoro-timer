@@ -103,7 +103,7 @@ function Home() {
       });
     } else {
       handleActiveInactiveButtons("pomodoro");
-      resetTimer("pomodoro", pomodoroCycles);
+      resetTimer("pomodoro");
     }
   };
 
