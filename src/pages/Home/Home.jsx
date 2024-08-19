@@ -171,7 +171,7 @@ function Home() {
             <section className="flex items-center">
               <h2>Hello</h2>
               <button
-                className="close-button absolute end-0"
+                className="close-button absolute end-0 text-[#007bff] hover:text-[#0056b3]"
                 onClick={closeModal}
               >
                 X
