@@ -1,6 +1,7 @@
 import classNames from "classnames";
 
 import React, { useRef, useState } from "react";
+import Modal from "react-modal";
 import { Timer } from "../../components";
 import styles from "./home.module.css";
 
@@ -10,6 +11,21 @@ const DEFAULT_SHORT_BREAK_MINUTE = 0;
 const DEFAULT_SHORT_BREAK_SECOND = 5;
 const DEFAULT_LONG_BREAK_MINUTE = 0;
 const DEFAULT_LONG_BREAK_SECOND = 10;
+
+Modal.setAppElement("#root");
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "90%",
+    maxWidth: "600px"
+  }
+};
 
 function Home() {
   const [minute, setMinute] = useState(DEFAULT_POMODORO_MINUTE);
@@ -22,6 +38,7 @@ function Home() {
   const [isPomodoroActive, setIsPomodoroActive] = useState(true);
   const [isBreakActive, setIsBreakActive] = useState(false);
   const [pomodoroCycles, setPomodoroCycles] = useState(0);
+  const [modalIsOpen, setIsOpen] = useState(false);
 
   const audioRef = useRef(null);
 
@@ -107,6 +124,14 @@ function Home() {
     }
   };
 
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
   return (
     <section className="flex h-screen flex-col items-center">
       <section className="mt-20 flex gap-10">
@@ -134,6 +159,28 @@ function Home() {
         >
           Break
         </button>
+        <button onClick={openModal}>
+          <img src="settings-menu-icon.svg" alt="Settings menu icon" />
+        </button>
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          style={customStyles}
+        >
+          <div className="relative flex flex-col items-center gap-10">
+            <section className="flex items-center">
+              <h2>Hello</h2>
+              <button
+                className="close-button absolute end-0"
+                onClick={closeModal}
+              >
+                X
+              </button>
+            </section>
+
+            <div>I am a modal</div>
+          </div>
+        </Modal>
       </section>
       <Timer
         isRunning={isRunning}
