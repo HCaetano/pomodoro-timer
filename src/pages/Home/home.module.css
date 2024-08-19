@@ -11,24 +11,3 @@
 .button-inactive:hover {
   background-color: #80c2ff;
 }
-
-/* button not getting this style */
-
-.close-button {
-  position: absolute;
-  top: 0.5rem; /* Adjust as needed 
-  right: 0.5rem; /* Adjust as needed */
-  padding: 0.25rem; /* Adjust as needed */
-  border: 2px solid #007bff; /* Blue border */
-  background-color: white; /* White background */
-  color: red; /* Blue text */
-  cursor: pointer;
-  font-size: 1.25rem; /* Adjust as needed */
-  line-height: 1; /* Ensures the text aligns properly */
-  outline: none; /* Removes default focus outline */
-}
-
-.close-button:hover {
-  border-color: #0056b3; /* Darker blue border on hover */
-  background-color: white; /* Keeps background white */
-}
