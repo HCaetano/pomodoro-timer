@@ -133,8 +133,16 @@ function Home() {
   }
 
   return (
-    <section className="flex h-screen flex-col items-center">
-      <section className="mt-20 flex gap-10">
+    <section className="flex h-screen flex-col p-4">
+      <button className="ml-auto" onClick={openModal}>
+        <img
+          src="settings-menu-icon.png"
+          alt="Settings menu button"
+          height={30}
+          width={30}
+        />
+      </button>
+      <section className="mx-auto mt-10 flex gap-10 sm:mt-20">
         <button
           className={classNames("btn", "flex", {
             [styles["button-active"]]: isPomodoroActive,
@@ -158,14 +166,6 @@ function Home() {
           }}
         >
           Break
-        </button>
-        <button onClick={openModal}>
-          <img
-            src="settings-menu-icon.png"
-            alt="Settings menu icon"
-            height={38}
-            width={38}
-          />
         </button>
         <Modal
           isOpen={modalIsOpen}
@@ -215,6 +215,7 @@ function Home() {
         </section>
         <p>Pomodoro cycles: {pomodoroCycles}</p>
       </section>
+      <footer>hi</footer>
     </section>
   );
 }
