@@ -160,7 +160,12 @@ function Home() {
           Break
         </button>
         <button onClick={openModal}>
-          <img src="settings-menu-icon.svg" alt="Settings menu icon" />
+          <img
+            src="settings-menu-icon.png"
+            alt="Settings menu icon"
+            height={38}
+            width={38}
+          />
         </button>
         <Modal
           isOpen={modalIsOpen}
@@ -169,7 +174,7 @@ function Home() {
         >
           <div className="relative flex flex-col items-center gap-10">
             <section className="flex items-center">
-              <h2>Hello</h2>
+              <h2>Settings</h2>
               <button
                 className="close-button absolute end-0 text-[#007bff] hover:text-[#0056b3]"
                 onClick={closeModal}
