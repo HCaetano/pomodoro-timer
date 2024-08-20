@@ -212,7 +212,7 @@ function Home() {
           onRequestClose={closeModal}
           style={customStyles}
         >
-          <div className="relative flex flex-col items-center gap-10">
+          <div className="relative flex flex-col items-center gap-5 sm:gap-7">
             <section className="flex items-center">
               <h2>Settings</h2>
               <button
@@ -224,9 +224,12 @@ function Home() {
             </section>
 
             <p>Choose an alarm sound</p>
-            <div className="flex w-full flex-col">
-              {alarmsMap.map((alarm) => (
-                <div className="flex" key={alarm.id}>
+            <div className="flex w-full flex-col gap-2">
+              {alarmsMap.map((alarm, index) => (
+                <div
+                  className={`flex justify-between py-4 ${index !== alarmsMap.length - 1 ? "border-b border-gray-300" : ""}`}
+                  key={alarm.id}
+                >
                   <p>{alarm.name}</p>
                   <button onClick={() => playSound(alarm.src)}>
                     <img
