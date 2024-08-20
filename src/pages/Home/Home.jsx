@@ -123,6 +123,8 @@ function Home() {
     } else {
       setMinute(DEFAULT_POMODORO_MINUTE);
       setSecond(DEFAULT_POMODORO_SECOND);
+      setBreakMinute(DEFAULT_SHORT_BREAK_MINUTE);
+      setBreakSecond(DEFAULT_SHORT_BREAK_SECOND);
     }
 
     setPomodoroMinute(DEFAULT_POMODORO_MINUTE);
