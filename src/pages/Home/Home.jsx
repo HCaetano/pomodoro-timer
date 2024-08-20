@@ -246,7 +246,7 @@ function Home() {
                       className="h-6 w-6"
                       onClick={() => {
                         setAlarmSource(alarm.src);
-                        // closeModal();
+                        closeModal();
                       }}
                     >
                       <img
