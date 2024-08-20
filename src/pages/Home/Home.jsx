@@ -244,7 +244,10 @@ function Home() {
                     </button>
                     <button
                       className="h-6 w-6"
-                      onClick={() => setAlarmSource(alarm.src)}
+                      onClick={() => {
+                        setAlarmSource(alarm.src);
+                        closeModal();
+                      }}
                     >
                       <img
                         src="check-button.png"
@@ -286,7 +289,23 @@ function Home() {
         </section>
         <p>Pomodoro cycles: {pomodoroCycles}</p>
       </section>
-      <footer>hi</footer>
+      <footer className="absolute bottom-0 left-0 flex h-20 w-full flex-col items-center gap-1 bg-[#0056b3] p-3 text-xs text-white">
+        <p>
+          Icons by{" "}
+          <a className="text-[#b3d7ff]" href="https://www.freepik.com/">
+            Freepik
+          </a>
+        </p>
+        <p>
+          Alarm sounds by{" "}
+          <a className="text-[#b3d7ff]" href="https://pixabay.com/">
+            Pixabay
+          </a>
+        </p>
+        <p>
+          Made by <a href="">Havyner Caetano</a>
+        </p>
+      </footer>
     </section>
   );
 }
