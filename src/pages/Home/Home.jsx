@@ -76,6 +76,7 @@ function Home() {
   const [isBreakActive, setIsBreakActive] = useState(false);
   const [pomodoroCycles, setPomodoroCycles] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [alarmSource, setAlarmSource] = useState("/alarms/small-gong.mp3");
 
   const audioRef = useRef(null);
 
@@ -138,7 +139,7 @@ function Home() {
     setSecond(pomodoroSecond);
   };
 
-  const playSound = (soundUrl = "/alarms/small-gong.mp3") => {
+  const playSound = (soundUrl = alarmSource) => {
     if (audioRef.current) {
       audioRef.current.src = soundUrl;
       audioRef.current.play();
@@ -231,13 +232,24 @@ function Home() {
                   key={alarm.id}
                 >
                   <p>{alarm.name}</p>
-                  <button onClick={() => playSound(alarm.src)}>
-                    <img
-                      src="play-button.png"
-                      alt={`Play ${alarm.name} sound`}
-                      width={24}
-                    />
-                  </button>
+                  <div className="flex gap-2">
+                    <button onClick={() => playSound(alarm.src)}>
+                      <img
+                        src="play-button.png"
+                        alt={`Play ${alarm.name} sound`}
+                        width={24}
+                      />
+                    </button>
+                    <button
+                      className="h-6 w-6"
+                      onClick={() => setAlarmSource(alarm.src)}
+                    >
+                      <img
+                        src="check-button.png"
+                        alt={`Set ${alarm.name} sound as default`}
+                      />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -268,7 +280,7 @@ function Home() {
           >
             Stop
           </button>
-          <audio ref={audioRef} src="/alarms/small-gong.mp3" />
+          <audio ref={audioRef} src={alarmSource} />
         </section>
         <p>Pomodoro cycles: {pomodoroCycles}</p>
       </section>
