@@ -78,9 +78,9 @@ function Home() {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [alarmSource, setAlarmSource] = useState("/alarms/small-gong.mp3");
 
-  const audioRef = useRef(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const handleActiveInactiveButtons = (name) => {
+  const handleActiveInactiveButtons = (name: string) => {
     setIsRunning(false);
 
     if (name === "pomodoro") {
@@ -104,7 +104,7 @@ function Home() {
     setIsRunning(!isRunning);
   };
 
-  const resetTimer = (nextCycleIs, currentCycleCounter) => {
+  const resetTimer = (nextCycleIs: string, currentCycleCounter?: number) => {
     setIsRunning(false);
 
     if (nextCycleIs === "break") {
@@ -141,7 +141,7 @@ function Home() {
     setSecond(pomodoroSecond);
   };
 
-  const playSound = (soundUrl = alarmSource) => {
+  const playSound = (soundUrl: string = alarmSource) => {
     if (audioRef.current) {
       audioRef.current.src = soundUrl;
       audioRef.current.play();
