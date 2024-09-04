@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react";
 import Modal from "react-modal";
 import { Timer } from "../../components";
 import {
-  alarmsMap,
+  alarms,
   DEFAULT_LONG_BREAK_MINUTE,
   DEFAULT_LONG_BREAK_SECOND,
   DEFAULT_POMODORO_MINUTE,
@@ -49,9 +49,7 @@ function Home() {
   const [isBreakActive, setIsBreakActive] = useState<boolean>(false);
   const [pomodoroCycles, setPomodoroCycles] = useState<number>(0);
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
-  const [alarmSource, setAlarmSource] = useState<string>(
-    "/alarms/small-gong.mp3"
-  );
+  const [alarmSource, setAlarmSource] = useState<string>(alarms[0].src);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -203,9 +201,9 @@ function Home() {
 
             <p>Choose an alarm sound</p>
             <div className="flex w-full flex-col gap-2">
-              {alarmsMap.map((alarm, index) => (
+              {alarms.map((alarm, index) => (
                 <div
-                  className={`flex justify-between py-4 ${index !== alarmsMap.length - 1 ? "border-b border-gray-300" : ""}`}
+                  className={`flex justify-between py-4 ${index !== alarms.length - 1 ? "border-b border-gray-300" : ""}`}
                   key={alarm.id}
                 >
                   <p>{alarm.name}</p>
