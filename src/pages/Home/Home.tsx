@@ -3,6 +3,7 @@ import classNames from "classnames";
 import React, { useRef, useState } from "react";
 import Modal from "react-modal";
 import { Timer } from "../../components";
+import Tooltip from "../../components/Tooltip/Tooltip";
 import {
   alarms,
   DEFAULT_LONG_BREAK_MINUTE,
@@ -152,7 +153,7 @@ function Home() {
     <section className="flex h-screen flex-col p-4">
       <button className="ml-auto" onClick={openModal}>
         <img
-          src="settings-menu-icon.png"
+          src="/icons/settings-menu-icon.png"
           alt="Settings menu button"
           height={30}
           width={30}
@@ -210,7 +211,7 @@ function Home() {
                   <div className="flex gap-2">
                     <button onClick={() => playSound(alarm.src)}>
                       <img
-                        src="play-button.png"
+                        src="/icons/play-button.png"
                         alt={`Play ${alarm.name} sound`}
                         width={24}
                       />
@@ -223,7 +224,7 @@ function Home() {
                       }}
                     >
                       <img
-                        src="check-button.png"
+                        src="/icons/check-button.png"
                         alt={`Set ${alarm.name} sound as default`}
                       />
                     </button>
@@ -260,7 +261,29 @@ function Home() {
           </button>
           <audio ref={audioRef} src={alarmSource} />
         </section>
-        <p>Pomodoro cycles: {pomodoroCycles}</p>
+        <section className="flex gap-2">
+          <p>Pomodoro cycles: {pomodoroCycles}</p>
+          <Tooltip
+            content={
+              <section className="flex flex-col gap-2">
+                <p>Focus for 25 minutes, </p>
+                <p>then take a 5-minute break.</p>
+                <p>After 4 cycles, you get a longer break.</p>
+                <p>
+                  It seems counterintuitive, but you&apos;ll get more
+                  productive.
+                </p>
+                <p>Taking breaks helps you keep focused for longer.</p>
+              </section>
+            }
+          >
+            <img
+              alt="Text explainer of what pomodoro is"
+              src="/icons/question-mark.png"
+              width={24}
+            />
+          </Tooltip>
+        </section>
       </section>
       <footer className="absolute bottom-0 left-0 flex h-20 w-full flex-col items-center gap-1 bg-[#0056b3] p-3 text-xs text-white">
         <p>
