@@ -1,7 +1,9 @@
 {
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2020,
-    "sourceType": "module"
+    "sourceType": "module",
+    "jsx": true
   },
   "env": {
     "es6": true,
@@ -11,9 +13,10 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended"
   ],
-  "plugins": ["react", "react-hooks", "prettier"],
+  "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
   "rules": {
     "prettier/prettier": "error",
     "react/prop-types": "off",
@@ -22,6 +25,12 @@
       { "allowAllCaps": true, "ignore": ["className"] }
     ],
     "comma-dangle": ["error", "never"],
-    "bem/class-names": "off"
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }

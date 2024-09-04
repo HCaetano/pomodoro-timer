@@ -7,6 +7,10 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^22.4.1",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "classnames": "^2.5.1",
     "fork-ts-checker-webpack-plugin": "^9.0.2",
     "react": "^18.3.1",
@@ -40,7 +44,12 @@
     ]
   },
   "devDependencies": {
+    "@types/css-modules": "^1.0.5",
+    "@types/react-modal": "^3.16.3",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
     "autoprefixer": "^10.4.19",
+    "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "postcss": "^8.4.40",

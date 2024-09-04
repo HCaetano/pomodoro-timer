@@ -1,4 +1,13 @@
-import React, { useEffect } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
+
+type TimerProps = {
+  isRunning: boolean;
+  minute: number;
+  second: number;
+  handleEndOfCycle: () => void;
+  setMinute: Dispatch<SetStateAction<number>>;
+  setSecond: Dispatch<SetStateAction<number>>;
+};
 
 const Timer = ({
   handleEndOfCycle,
@@ -7,7 +16,7 @@ const Timer = ({
   setMinute,
   second,
   setSecond
-}) => {
+}: TimerProps) => {
   useEffect(() => {
     const interval = setInterval(() => {
       if (isRunning) {
@@ -28,7 +37,9 @@ const Timer = ({
     return () => clearInterval(interval);
   }, [isRunning, minute, second]);
 
-  const prependZeroIfNumberIsLessThanTen = (number) => {
+  const prependZeroIfNumberIsLessThanTen = (
+    number: number
+  ): string | number => {
     if (number < 10) {
       return `0${number}`;
     }
