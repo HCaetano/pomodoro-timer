@@ -276,7 +276,13 @@ function Home() {
           </a>
         </p>
         <p>
-          Made by <a href="">Havyner Caetano</a>
+          Made by{" "}
+          <a
+            className="text-[#b3d7ff]"
+            href="https://www.linkedin.com/in/havyner-caetano/"
+          >
+            Havyner Caetano
+          </a>
         </p>
       </footer>
     </section>
