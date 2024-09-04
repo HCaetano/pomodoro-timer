@@ -153,7 +153,7 @@ function Home() {
     <section className="flex h-screen flex-col p-4">
       <button className="ml-auto" onClick={openModal}>
         <img
-          src="settings-menu-icon.png"
+          src="/icons/settings-menu-icon.png"
           alt="Settings menu button"
           height={30}
           width={30}
@@ -211,7 +211,7 @@ function Home() {
                   <div className="flex gap-2">
                     <button onClick={() => playSound(alarm.src)}>
                       <img
-                        src="play-button.png"
+                        src="/icons/play-button.png"
                         alt={`Play ${alarm.name} sound`}
                         width={24}
                       />
@@ -224,7 +224,7 @@ function Home() {
                       }}
                     >
                       <img
-                        src="check-button.png"
+                        src="/icons/check-button.png"
                         alt={`Set ${alarm.name} sound as default`}
                       />
                     </button>
@@ -279,7 +279,7 @@ function Home() {
           >
             <img
               alt="Text explainer of what pomodoro is"
-              src="question-mark.png"
+              src="/icons/question-mark.png"
               width={24}
             />
           </Tooltip>
