@@ -52,6 +52,8 @@ function Home() {
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
   const [alarmSource, setAlarmSource] = useState<string>(alarms[0].src);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
+  const [audioBuffer, setAudioBuffer] = useState<AudioBuffer | null>(null);
 
   const handleChangesPomodoroBreak = (name: string) => {
     setIsRunning(false);
@@ -75,6 +77,17 @@ function Home() {
 
   const toggleTimer = () => {
     setIsRunning(!isRunning);
+
+    // Safely create an AudioContext with a fallback for older browsers
+    const AudioContextClass =
+      window.AudioContext || (window as any).webkitAudioContext;
+    if (AudioContextClass) {
+      const context = new AudioContextClass();
+      setAudioContext(context);
+      initializeSound(alarmSource);
+    } else {
+      console.error("Web Audio API is not supported in this browser.");
+    }
   };
 
   const resetTimer = (nextCycleIs: string, currentCycleCounter?: number) => {
@@ -117,16 +130,36 @@ function Home() {
   // todo
   // sound not playing because browser autoplay policy
   // plays after changing sound and when clicking on buttons
-  // react icon on tab is not working on deployed version
-  // tab says "react app"
 
-  const playSound = (soundUrl: string = alarmSource) => {
-    if (audioRef.current) {
-      audioRef.current.src = soundUrl;
-      audioRef.current.muted = false;
-      audioRef.current.play();
+  const initializeSound = async (url: string) => {
+    if (!audioContext) return;
+
+    try {
+      const response = await fetch(url);
+      const arrayBuffer = await response.arrayBuffer();
+      const buffer = await audioContext.decodeAudioData(arrayBuffer);
+      setAudioBuffer(buffer);
+    } catch (error) {
+      console.error("Error loading sound:", error);
     }
   };
+
+  const playSound = () => {
+    if (audioContext && audioBuffer) {
+      const source = audioContext.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(audioContext.destination);
+      source.start(0);
+    }
+  };
+
+  // const playSound = (soundUrl: string = alarmSource) => {
+  //   if (audioRef.current) {
+  //     audioRef.current.src = soundUrl;
+  //     audioRef.current.muted = false;
+  //     audioRef.current.play();
+  //   }
+  // };
 
   const handleEndOfCycle = () => {
     playSound();
@@ -215,7 +248,8 @@ function Home() {
                 >
                   <p>{alarm.name}</p>
                   <div className="flex gap-2">
-                    <button onClick={() => playSound(alarm.src)}>
+                    <button onClick={() => playSound()}>
+                      {/* <button onClick={() => playSound(alarm.src)}> */}
                       <img
                         src="/icons/play-button.png"
                         alt={`Play ${alarm.name} sound`}
@@ -251,7 +285,12 @@ function Home() {
       />
       <section className="flex flex-col items-center gap-10">
         <section className="flex items-center gap-10">
-          <button className="btn w-fit" onClick={toggleTimer}>
+          <button
+            className="btn w-fit"
+            onClick={() => {
+              toggleTimer();
+            }}
+          >
             {isRunning ? "Pause" : "Start"}
           </button>
           <button
