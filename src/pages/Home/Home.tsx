@@ -75,18 +75,24 @@ function Home() {
     }
   };
 
-  const toggleTimer = () => {
+  const toggleTimer = async () => {
     setIsRunning(!isRunning);
 
-    // Safely create an AudioContext with a fallback for older browsers
-    const AudioContextClass =
-      window.AudioContext || (window as any).webkitAudioContext;
-    if (AudioContextClass) {
+    // Create AudioContext if it doesn't exist
+    if (!audioContext) {
+      // Define a type that covers both standard AudioContext and the legacy webkitAudioContext
+      const AudioContextClass = (window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext })
+          .webkitAudioContext) as typeof AudioContext;
+
       const context = new AudioContextClass();
       setAudioContext(context);
-      initializeSound(alarmSource);
-    } else {
-      console.error("Web Audio API is not supported in this browser.");
+      await initializeSound("path/to/your/sound/file.mp3"); // Replace with your actual alarm source
+    }
+
+    // Play sound when the timer starts
+    if (!isRunning) {
+      playSound();
     }
   };
 
