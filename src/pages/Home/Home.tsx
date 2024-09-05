@@ -51,7 +51,6 @@ function Home() {
   const [pomodoroCycles, setPomodoroCycles] = useState<number>(0);
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
   const [alarmSource, setAlarmSource] = useState<string>(alarms[0].src);
-
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const handleChangesPomodoroBreak = (name: string) => {
@@ -124,6 +123,7 @@ function Home() {
   const playSound = (soundUrl: string = alarmSource) => {
     if (audioRef.current) {
       audioRef.current.src = soundUrl;
+      audioRef.current.muted = false;
       audioRef.current.play();
     }
   };
@@ -265,7 +265,7 @@ function Home() {
           >
             Stop
           </button>
-          <audio ref={audioRef} src={alarmSource} preload="auto" />
+          <audio ref={audioRef} src={alarmSource} preload="auto" muted={true} />
         </section>
         <section className="flex gap-2">
           <p>Pomodoro cycles: {pomodoroCycles}</p>
