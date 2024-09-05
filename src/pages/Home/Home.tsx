@@ -115,6 +115,12 @@ function Home() {
     setSecond(pomodoroSecond);
   };
 
+  // todo
+  // sound not playing because browser autoplay policy
+  // plays after changing sound and when clicking on buttons
+  // react icon on tab is not working on deployed version
+  // tab says "react app"
+
   const playSound = (soundUrl: string = alarmSource) => {
     if (audioRef.current) {
       audioRef.current.src = soundUrl;
@@ -259,7 +265,7 @@ function Home() {
           >
             Stop
           </button>
-          <audio ref={audioRef} src={alarmSource} />
+          <audio ref={audioRef} src={alarmSource} preload="auto" />
         </section>
         <section className="flex gap-2">
           <p>Pomodoro cycles: {pomodoroCycles}</p>
