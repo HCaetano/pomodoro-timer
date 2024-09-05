@@ -1,6 +1,7 @@
 import classNames from "classnames";
 
-import React, { useRef, useState } from "react";
+import { useMediaQuery } from "@react-hook/media-query";
+import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
 import { Timer } from "../../components";
 import Tooltip from "../../components/Tooltip/Tooltip";
@@ -26,7 +27,9 @@ const customStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     width: "90%",
-    maxWidth: "600px"
+    maxWidth: "600px",
+    maxHeight: "66vh",
+    overflow: "auto"
   }
 };
 
@@ -51,8 +54,8 @@ function Home() {
   const [pomodoroCycles, setPomodoroCycles] = useState<number>(0);
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
   const [alarmSource, setAlarmSource] = useState<string>(alarms[0].src);
-
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   const handleChangesPomodoroBreak = (name: string) => {
     setIsRunning(false);
@@ -115,12 +118,6 @@ function Home() {
     setSecond(pomodoroSecond);
   };
 
-  // todo
-  // sound not playing because browser autoplay policy
-  // plays after changing sound and when clicking on buttons
-  // react icon on tab is not working on deployed version
-  // tab says "react app"
-
   const playSound = (soundUrl: string = alarmSource) => {
     if (audioRef.current) {
       audioRef.current.src = soundUrl;
@@ -154,6 +151,12 @@ function Home() {
   function closeModal() {
     setIsOpen(false);
   }
+
+  useEffect(() => {
+    if (isMobile) {
+      openModal();
+    }
+  }, [isMobile]);
 
   return (
     <section className="flex h-screen flex-col p-4">
